@@ -1,18 +1,22 @@
 export const navbarRoutes = [
   {
     label: "Timeline",
-    href: "",
+    href: "#timeline",
+    onClick: () => {},
   },
   {
     label: "Overview",
-    href: "",
+    href: "#overview",
+    onClick: () => {},
   },
   {
     label: "FAQs",
-    href: "",
+    href: "#FAQ",
+    onClick: () => {},
   },
   {
     label: "Contact",
     href: "/contact",
+    onClick: () => {},
   },
 ];

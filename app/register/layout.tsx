@@ -1,5 +1,4 @@
 import Navbar from "@/components/navbar";
-import Link from "next/link";
 
 export default function ContactLayout({
   children,
@@ -7,7 +6,7 @@ export default function ContactLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-secondary1 min-h-screen">
+    <div className="bg-secondary1 min-h-full overflow-y-scroll">
       <div className="min-[915px]:flex hidden">
         <Navbar />
       </div>

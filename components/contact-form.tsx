@@ -1,7 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import axios from "axios";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import {
   Card,
   CardContent,
@@ -9,25 +14,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
+import { absoluteUrl } from "@/lib/utils";
 
 const formSchema = z.object({
-  firstName: z
+  first_name: z
     .string()
     .min(2, { message: "Too short" })
-    .max(50, { message: "Too long" })
-    .optional(),
-  teamName: z
-    .string()
-    .min(2, { message: "Too short" })
-    .max(50, { message: "Too long" })
-    .optional(),
-  topic: z.string().min(2, { message: "Too short" }).optional(),
+    .max(50, { message: "Too long" }),
   email: z.string().email({ message: "Enter a valid mail!" }),
+  phone_number: z.string().min(6, { message: "Enter a valid phone number" }),
   message: z
     .string()
     .min(10, { message: "Too short" })
@@ -35,36 +34,65 @@ const formSchema = z.object({
 });
 
 const ContactForm = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      teamName: "",
-      topic: "",
+      first_name: "",
       email: "",
       message: "",
+      phone_number: "",
     },
   });
+
+  const isLoading = form.formState.isSubmitting;
+
+  const contactUrl = absoluteUrl("/hackathon/contact-form");
+
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      await axios.post(contactUrl, data);
+      toast.success("Message sent successfully.");
+      form.reset();
+    } catch (err: any) {
+      if (err?.response?.status === 400) {
+        toast.error("Ensure, you filled in the required fields");
+      } else if (err?.response?.status === 500) {
+        toast.error("Something went wrong");
+      } else if (err?.request) {
+        console.error("No response received from the server");
+      } else {
+        console.error("Error:", err.message);
+      }
+    } finally {
+      router.refresh();
+    }
+  };
+
   return (
-    <Card className="md:w-[617px] sm:w-[450px] w-[350px] bg-transparent shadow-2xl rounded-lg md:p-10 sm:p-8 p-4 border-none bg-secondary1">
+    <Card className="md:w-[617px] sm:w-[450px] w-[350px] bg-transparent shadow-2xl rounded-lg md:p-10 sm:p-8 p-4 border-none z-10">
       <CardHeader>
         <CardTitle className="flex flex-col space-y-2 font-semibold text-xl text-secondary3">
           Questions or need assistance? <span>Let us know about it</span>
         </CardTitle>
-        <CardDescription className="text-white text-sm font-medium w-4/6">
+        <CardDescription className="text-white text-sm font-medium w-4/6 min-[915px]:hidden flex">
           Email us below to any question related to our event
         </CardDescription>
       </CardHeader>
       <CardContent className="">
         <Form {...form}>
-          <form className="flex flex-col space-y-10">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col space-y-10"
+          >
             <FormField
               control={form.control}
-              name="firstName"
+              name="first_name"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Input
+                      disabled={isLoading}
                       placeholder="First Name"
                       className="bg-transparent placeholder:text-lg placeholder:text-white py-6 px-6 shadow-lg text-white"
                       {...field}
@@ -80,7 +108,24 @@ const ContactForm = () => {
                 <FormItem>
                   <FormControl>
                     <Input
+                      disabled={isLoading}
                       placeholder="Mail"
+                      className="bg-transparent placeholder:text-lg placeholder:text-white py-6 px-6 shadow-lg text-white"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="phone_number"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      placeholder="Phone Number"
                       className="bg-transparent placeholder:text-lg placeholder:text-white py-6 px-6 shadow-lg text-white"
                       {...field}
                     />
@@ -95,6 +140,7 @@ const ContactForm = () => {
                 <FormItem>
                   <FormControl>
                     <Textarea
+                      disabled={isLoading}
                       placeholder="Message"
                       className="resize-none placeholder:text-white placeholder:text-lg bg-transparent text-white"
                       rows={5}

@@ -1,17 +1,29 @@
 "use client";
 
-import Link from "next/link";
-import { navbarRoutes } from "./navbar-routes";
-import { Button } from "@/components/ui/button";
-import MobileSidebar from "./mobile-sidebar";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
+
+import { navbarRoutes } from "@/components/navbar-routes";
+import { Button } from "@/components/ui/button";
+import MobileSidebar from "@/components/mobile-sidebar";
 import { cn } from "@/lib/utils";
 
 const Navbar = () => {
   const pathname = usePathname();
+
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
+    const href = e.currentTarget.href;
+    const targetId = href.replace(/.*\#/, "");
+    const elem = document.getElementById(targetId);
+    elem?.scrollIntoView({
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div className="w-full bg-secondary1 flex justify-between items-center p-4 min-[915px]:p-10">
-      <Link href="">
+      <Link href="/">
         <div className="">
           <h3 className="text-4xl font-bold text-white">
             get<span className="text-secondary3">linked</span>
@@ -24,6 +36,7 @@ const Navbar = () => {
             href={route.href}
             key={route.href}
             className="text-sm min-[912px]:flex hidden font-medium cursor-pointer"
+            onClick={handleScroll}
           >
             <div
               className={cn(

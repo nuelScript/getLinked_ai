@@ -1,12 +1,16 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { navbarRoutes } from "./navbar-routes";
-import { useEffect, useState } from "react";
+import { navbarRoutes } from "@/components/navbar-routes";
+import { cn } from "@/lib/utils";
 
 const MobileSidebar = () => {
+  const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -28,16 +32,16 @@ const MobileSidebar = () => {
           >
             <span
               className="w-full h-[3px] rounded-md bg-white inline-flex transform -translate-x-3
-            group-hover:translate-x-0 transition-all ease-in-out duration-300"
+            group-hover:translate-x-0 group-hover:bg-secondary3 transition-all ease-in-out duration-300"
             ></span>
             <span
               className="w-full h-[3px] rounded-md bg-white inline-flex transform
-            translate-x-0 group-hover:-translate-x-3 transition-all ease-in-out 
+            translate-x-0 group-hover:-translate-x-3 group-hover:bg-secondary3 transition-all ease-in-out 
             duration-300"
             ></span>
             <span
               className="w-full h-[3px] rounded-md bg-white inline-flex transform
-            translate-x-3 group-hover:translate-x-0 transition-all ease-in-out 
+            translate-x-3 group-hover:translate-x-0 group-hover:bg-secondary3 transition-all ease-in-out 
             duration-300"
             ></span>
           </div>
@@ -52,7 +56,14 @@ const MobileSidebar = () => {
                 key={route.href}
                 className="text-lg font-medium cursor-pointer"
               >
-                <div className="hover:text-secondary3 transition text-white">
+                <div
+                  className={cn(
+                    "hover:text-secondary3 transition text-white",
+                    pathname === route.href
+                      ? "bg-clip-text text-transparent bg-gradient-to-r from-secondary2 to-secondary4"
+                      : "text-white"
+                  )}
+                >
                   {route.label}
                 </div>
               </Link>
