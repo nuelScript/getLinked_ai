@@ -36,7 +36,6 @@ const Navbar = () => {
             href={route.href}
             key={route.href}
             className="text-sm min-[912px]:flex hidden font-medium cursor-pointer"
-            onClick={handleScroll}
           >
             <div
               className={cn(
