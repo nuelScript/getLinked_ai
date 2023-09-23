@@ -17,6 +17,5 @@ export const navbarRoutes = [
   {
     label: "Contact",
     href: "/contact",
-    onClick: () => {},
   },
 ];

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { criteria } from "@/public/images/images";
 import Image from "next/image";
+import Link from "next/link";
 
 const CriteriaSection = () => {
   return (
@@ -56,12 +57,14 @@ const CriteriaSection = () => {
             technologies or algorithms, and the scalability of the solution.
           </p>
           <div className="flex min-[1300px]:justify-start justify-center">
-            <Button
-              variant="custom"
-              className="px-10 rounded-sm py-6 min-[912px]:flex hidden"
-            >
-              Register
-            </Button>
+            <Link href="/register">
+              <Button
+                variant="custom"
+                className="px-10 rounded-sm py-6 min-[912px]:flex hidden"
+              >
+                Register
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

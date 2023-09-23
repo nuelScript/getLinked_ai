@@ -16,6 +16,8 @@ import trophy from "./trophy.svg";
 import gold from "./gold_medal.svg";
 import silver from "./silver_medal.svg";
 import bronze from "./bronze_medal.svg";
+import girl from "./girl.svg";
+import boy from "./boy.svg";
 
 export {
   register,
@@ -36,4 +38,6 @@ export {
   gold,
   silver,
   bronze,
+  girl,
+  boy,
 };

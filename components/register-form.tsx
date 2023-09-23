@@ -35,6 +35,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { CongratsModal } from "@/components/congrats-modal";
 import { absoluteUrl } from "@/lib/utils";
+import Image from "next/image";
+import { boy, girl } from "@/public/images/images";
 
 const formSchema = z.object({
   team_name: z
@@ -126,9 +128,22 @@ const RegisterForm = () => {
           <CardTitle className="font-semibold text-3xl text-secondary3 hidden min-[915px]:block">
             Register
           </CardTitle>
-          <CardDescription className="text-sm font-medium min-[915px]:space-y-8 space-y-4">
-            <p className=""></p>
-            <p className="uppercase text-white font-medium">
+          <CardDescription className="relative text-sm font-medium min-[915px]:space-y-8 space-y-4">
+            <Image
+              src={girl}
+              alt="girl-walking"
+              className="absolute left-[200px] min-[915px]:top-5 top-1"
+            />
+            <Image
+              src={boy}
+              alt="boy-walking"
+              className="absolute left-56 -top-4"
+            />
+            <p className="text-white">
+              Be part of this movement!{" "}
+              <span className="text-secondary3">.........................</span>
+            </p>
+            <p className="uppercase text-white text-xl sm:text-2xl font-medium">
               Create your account
             </p>
           </CardDescription>
